@@ -213,6 +213,8 @@ class Backend(BaseBackend):
         position_map = {}
         symbols = []
         for pos in positions:
+            if pos.symbol in ['LTMAQW', 'CHKAQ']:
+                continue
             symbol = pos.symbol
             try:
                 z_position = zp.Position(symbol_lookup(symbol))
