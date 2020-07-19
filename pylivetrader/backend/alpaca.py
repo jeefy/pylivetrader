@@ -86,6 +86,12 @@ def skip_http_error(statuses):
                     log.warn(str(e))
                 else:
                     raise
+            except APIError as e:
+                status_code = e.status_code
+                if status_code in statuses:
+                    log.warn(str(e))
+                else:
+                    raise
         return wrapper
     return decorator
 
@@ -213,8 +219,6 @@ class Backend(BaseBackend):
         position_map = {}
         symbols = []
         for pos in positions:
-            if pos.symbol in ['LTMAQW', 'CHKAQ']:
-                continue
             symbol = pos.symbol
             try:
                 z_position = zp.Position(symbol_lookup(symbol))
